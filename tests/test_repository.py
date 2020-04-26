@@ -289,6 +289,7 @@ def test_release_urls(package_meta, repository_url, release_urls):
     repo = repository.Repository(
         repository_url=repository_url, username="username", password="password",
     )
+
     assert repo.release_urls(packages) == release_urls
 
 
@@ -298,6 +299,6 @@ def test_package_is_uploaded_incorrect_repo_url():
         username="username",
         password="password",
     )
-
     repo.url = "https://bad.repo.com/legacy"
+
     assert repo.package_is_uploaded(None) is False
