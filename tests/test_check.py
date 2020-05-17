@@ -14,6 +14,7 @@
 import io
 
 import pretend
+import pytest
 
 from twine import commands
 from twine import package as package_file
@@ -77,13 +78,14 @@ def test_check_passing_distribution(monkeypatch):
     assert renderer.render.calls == [pretend.call("blah", stream=warning_stream)]
 
 
-def test_check_passing_distribution_with_none_renderer(monkeypatch):
+@pytest.mark.parametrize("content_type", ["text/plain", "text/markdown"])
+def test_check_passing_distribution_with_none_renderer(content_type, monkeypatch):
     """Test when a distribution passes twine check with renderers returning None"""
 
     package = pretend.stub(
         metadata_dictionary=lambda: {
             "description": "blah",
-            "description_content_type": "text/markdown",
+            "description_content_type": content_type,
         }
     )
     output_stream = io.StringIO()
