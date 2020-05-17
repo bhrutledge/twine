@@ -88,7 +88,6 @@ def test_check_passing_distribution_with_none_renderer(content_type, monkeypatch
             "description_content_type": content_type,
         }
     )
-    output_stream = io.StringIO()
 
     monkeypatch.setattr(commands, "_find_dists", lambda a: ["dist/dist.tar.gz"])
     monkeypatch.setattr(
@@ -97,6 +96,7 @@ def test_check_passing_distribution_with_none_renderer(content_type, monkeypatch
         pretend.stub(from_filename=lambda *a, **kw: package),
     )
 
+    output_stream = io.StringIO()
     assert not check.check(["dist/*"], output_stream=output_stream)
     assert output_stream.getvalue() == "Checking dist/dist.tar.gz: PASSED\n"
 
