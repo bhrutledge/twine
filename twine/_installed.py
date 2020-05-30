@@ -55,6 +55,6 @@ class Installed(pkginfo.Installed):
                             return f.read()
 
         warnings.warn(
-            "No PKG-INFO or METADATA found for package: %s" % self.package_name
+            "No PKG-INFO or METADATA found for package: %s" % self.package_name,
         )
         return None

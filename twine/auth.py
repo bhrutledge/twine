@@ -14,7 +14,7 @@ from twine import utils
 
 class CredentialInput:
     def __init__(
-        self, username: Optional[str] = None, password: Optional[str] = None
+        self, username: Optional[str] = None, password: Optional[str] = None,
     ) -> None:
         self.username = username
         self.password = password
@@ -77,7 +77,7 @@ class Resolver:
 
     def password_from_keyring_or_prompt(self) -> str:
         return self.get_password_from_keyring() or self.prompt(
-            "password", getpass.getpass
+            "password", getpass.getpass,
         )
 
     def prompt(self, what: str, how: Callable[..., str]) -> str:

@@ -35,10 +35,10 @@ class RedirectDetected(TwineException):
             [
                 "{} attempted to redirect to {}.".format(repository_url, redirect_url),
                 "If you trust these URLs, set {} as your repository URL.".format(
-                    redirect_url
+                    redirect_url,
                 ),
                 "Aborting.",
-            ]
+            ],
         )
 
         return cls(msg)
@@ -61,7 +61,7 @@ class UploadToDeprecatedPyPIDetected(TwineException):
 
     @classmethod
     def from_args(
-        cls, target_url: str, default_url: str, test_url: str
+        cls, target_url: str, default_url: str, test_url: str,
     ) -> "UploadToDeprecatedPyPIDetected":
         """Return an UploadToDeprecatedPyPIDetected instance."""
         return cls(
@@ -71,7 +71,7 @@ class UploadToDeprecatedPyPIDetected(TwineException):
             "{} (or {}) to upload your packages instead. "
             "These are the default URLs for Twine now. \n More at "
             "https://packaging.python.org/guides/migrating-to-pypi-org/"
-            " .".format(target_url, default_url, test_url)
+            " .".format(target_url, default_url, test_url),
         )
 
 

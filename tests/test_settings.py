@@ -40,8 +40,8 @@ def test_settings_transforms_config(tmpdir):
             repository: https://upload.pypi.org/legacy/
             username:username
             password:password
-        """
-            )
+        """,
+            ),
         )
     s = settings.Settings(config_file=pypirc)
     assert s.repository_config["repository"] == "https://upload.pypi.org/legacy/"
@@ -80,7 +80,7 @@ def test_client_cert_is_set_and_password_not_if_both_given(entered_password):
     """Verify that if both password and client_cert are given they are set"""
     client_cert = "/random/path"
     settings_obj = settings.Settings(
-        username="fakeuser", password="anything", client_cert=client_cert
+        username="fakeuser", password="anything", client_cert=client_cert,
     )
     assert not settings_obj.password
     assert settings_obj.client_cert == client_cert

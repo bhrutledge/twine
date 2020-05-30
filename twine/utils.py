@@ -75,7 +75,7 @@ def get_config(path: str = "~/.pypirc") -> Dict[str, RepositoryConfig]:
                 defaults[key] = parser.get("server-login", key)
 
     config: DefaultDict[str, RepositoryConfig] = collections.defaultdict(
-        lambda: defaults.copy()
+        lambda: defaults.copy(),
     )
 
     # don't require users to manually configure URLs for these repositories
@@ -113,12 +113,12 @@ def _validate_repository_url(repository_url: str) -> None:
         validator.validate(rfc3986.uri_reference(repository_url))
     except rfc3986.exceptions.RFC3986Exception as exc:
         raise exceptions.UnreachableRepositoryURLDetected(
-            f"Invalid repository URL: {exc.args[0]}."
+            f"Invalid repository URL: {exc.args[0]}.",
         )
 
 
 def get_repository_from_config(
-    config_file: str, repository: str, repository_url: Optional[str] = None
+    config_file: str, repository: str, repository_url: Optional[str] = None,
 ) -> RepositoryConfig:
     # Get our config from, if provided, command-line values for the
     # repository name and URL, or the .pypirc file
@@ -174,14 +174,14 @@ def check_status_code(response: requests.Response, verbose: bool) -> None:
             f"pypi.org and test.pypi.org. Try using {DEFAULT_REPOSITORY} (or "
             f"{TEST_REPOSITORY}) to upload your packages instead. These are "
             f"the default URLs for Twine now. More at "
-            f"https://packaging.python.org/guides/migrating-to-pypi-org/."
+            f"https://packaging.python.org/guides/migrating-to-pypi-org/.",
         )
     elif response.status_code == 405 and "pypi.org" in response.url:
         raise exceptions.InvalidPyPIUploadURL(
             f"It appears you're trying to upload to pypi.org but have an "
             f"invalid URL. You probably want one of these two URLs: "
             f"{DEFAULT_REPOSITORY} or {TEST_REPOSITORY}. Check your "
-            f"--repository-url value."
+            f"--repository-url value.",
         )
 
     try:
@@ -231,8 +231,8 @@ def get_userpass_value(
         return None
 
 
-get_cacert = functools.partial(get_userpass_value, key="ca_cert",)
-get_clientcert = functools.partial(get_userpass_value, key="client_cert",)
+get_cacert = functools.partial(get_userpass_value, key="ca_cert")
+get_clientcert = functools.partial(get_userpass_value, key="client_cert")
 
 
 class EnvironmentDefault(argparse.Action):

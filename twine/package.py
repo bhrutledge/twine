@@ -85,7 +85,7 @@ class PackageFile:
                 break
         else:
             raise exceptions.InvalidDistribution(
-                "Unknown distribution format: '%s'" % os.path.basename(filename)
+                "Unknown distribution format: '%s'" % os.path.basename(filename),
             )
 
         # If pkginfo encounters a metadata version it doesn't support, it may
@@ -93,7 +93,7 @@ class PackageFile:
         # and version
         if not (meta.name and meta.version):
             raise exceptions.InvalidDistribution(
-                "Invalid distribution metadata. Try upgrading twine if possible."
+                "Invalid distribution metadata. Try upgrading twine if possible.",
             )
 
         py_version: Optional[str]
@@ -159,7 +159,7 @@ class PackageFile:
         return data
 
     def add_gpg_signature(
-        self, signature_filepath: str, signature_filename: str
+        self, signature_filepath: str, signature_filename: str,
     ) -> None:
         if self.gpg_signature is not None:
             raise exceptions.InvalidDistribution("GPG Signature can only be added once")
@@ -185,7 +185,7 @@ class PackageFile:
         except FileNotFoundError:
             if gpg_args[0] != "gpg":
                 raise exceptions.InvalidSigningExecutable(
-                    "{} executable not available.".format(gpg_args[0])
+                    "{} executable not available.".format(gpg_args[0]),
                 )
 
         print("gpg executable not available. Attempting fallback to gpg2.")
@@ -196,7 +196,7 @@ class PackageFile:
             raise exceptions.InvalidSigningExecutable(
                 "'gpg' or 'gpg2' executables not available. "
                 "Try installing one of these or specifying an executable "
-                "with the --sign-with flag."
+                "with the --sign-with flag.",
             )
 
 

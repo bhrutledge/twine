@@ -70,7 +70,7 @@ class Wheel(distribution.Distribution):
 
         else:
             raise exceptions.InvalidDistribution(
-                "Not a known archive format for file: %s" % fqn
+                "Not a known archive format for file: %s" % fqn,
             )
 
         try:

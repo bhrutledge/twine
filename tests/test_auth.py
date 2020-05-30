@@ -63,7 +63,7 @@ def test_get_username_and_password_keyring_overrides_prompt(monkeypatch, config)
         @staticmethod
         def get_credential(system, user):
             return cred(
-                "real_user", "real_user@{system} sekure pa55word".format(**locals())
+                "real_user", "real_user@{system} sekure pa55word".format(**locals()),
             )
 
         @staticmethod
@@ -95,20 +95,20 @@ def entered_username(monkeypatch):
 
 
 def test_get_username_keyring_missing_get_credentials_prompts(
-    entered_username, keyring_missing_get_credentials, config
+    entered_username, keyring_missing_get_credentials, config,
 ):
     assert auth.Resolver(config, cred()).username == "entered user"
 
 
 def test_get_username_keyring_missing_non_interactive_aborts(
-    entered_username, keyring_missing_get_credentials, config
+    entered_username, keyring_missing_get_credentials, config,
 ):
     with pytest.raises(exceptions.NonInteractive):
         auth.Private(config, cred()).username
 
 
 def test_get_password_keyring_missing_non_interactive_aborts(
-    entered_username, keyring_missing_get_credentials, config
+    entered_username, keyring_missing_get_credentials, config,
 ):
     with pytest.raises(exceptions.NonInteractive):
         auth.Private(config, cred("user")).password
@@ -147,7 +147,7 @@ def keyring_no_backends_get_credential(monkeypatch):
 
 
 def test_get_username_runtime_error_suppressed(
-    entered_username, keyring_no_backends_get_credential, recwarn, config
+    entered_username, keyring_no_backends_get_credential, recwarn, config,
 ):
     assert auth.Resolver(config, cred()).username == "entered user"
     assert len(recwarn) == 1
@@ -156,7 +156,7 @@ def test_get_username_runtime_error_suppressed(
 
 
 def test_get_password_runtime_error_suppressed(
-    entered_password, keyring_no_backends, recwarn, config
+    entered_password, keyring_no_backends, recwarn, config,
 ):
     assert auth.Resolver(config, cred("user")).password == "entered pw"
     assert len(recwarn) == 1

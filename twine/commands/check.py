@@ -64,7 +64,7 @@ class _WarningStream:
                 level_text=matched.group("level").capitalize(),
                 line=matched.group("line"),
                 message=matched.group("message").rstrip("\r\n"),
-            )
+            ),
         )
 
     def __str__(self) -> str:
@@ -72,7 +72,7 @@ class _WarningStream:
 
 
 def _check_file(
-    filename: str, render_warning_stream: _WarningStream
+    filename: str, render_warning_stream: _WarningStream,
 ) -> Tuple[List[str], bool]:
     """Check given distribution."""
     warnings = []
@@ -86,7 +86,7 @@ def _check_file(
 
     if description_content_type is None:
         warnings.append(
-            "`long_description_content_type` missing. defaulting to `text/x-rst`."
+            "`long_description_content_type` missing. defaulting to `text/x-rst`.",
         )
         description_content_type = "text/x-rst"
 

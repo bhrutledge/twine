@@ -8,7 +8,7 @@ from twine import exceptions
 
 def test_ensure_wheel_files_uploaded_first():
     files = commands._group_wheel_files_first(
-        ["twine/foo.py", "twine/first.whl", "twine/bar.py", "twine/second.whl"]
+        ["twine/foo.py", "twine/first.whl", "twine/bar.py", "twine/second.whl"],
     )
     expected = [
         "twine/first.whl",

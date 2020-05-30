@@ -28,11 +28,11 @@ def register(register_settings: settings.Settings, package: str) -> None:
 
     if not os.path.exists(package):
         raise exceptions.PackageNotFound(
-            f'"{package}" does not exist on the file system.'
+            f'"{package}" does not exist on the file system.',
         )
 
     resp = repository.register(
-        package_file.PackageFile.from_filename(package, register_settings.comment)
+        package_file.PackageFile.from_filename(package, register_settings.comment),
     )
     repository.close()
 

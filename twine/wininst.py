@@ -38,7 +38,7 @@ class WinInst(distribution.Distribution):
 
         else:
             raise exceptions.InvalidDistribution(
-                "Not a known archive format for file: %s" % fqn
+                "Not a known archive format for file: %s" % fqn,
             )
 
         try:
@@ -57,5 +57,5 @@ class WinInst(distribution.Distribution):
             archive.close()
 
         raise exceptions.InvalidDistribution(
-            "No PKG-INFO/.egg-info in archive: %s" % fqn
+            "No PKG-INFO/.egg-info in archive: %s" % fqn,
         )

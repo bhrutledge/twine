@@ -26,7 +26,7 @@ from twine import utils
 
 
 def skip_upload(
-    response: requests.Response, skip_existing: bool, package: package_file.PackageFile
+    response: requests.Response, skip_existing: bool, package: package_file.PackageFile,
 ) -> bool:
     if not skip_existing:
         return False
@@ -66,10 +66,10 @@ def upload(upload_settings: settings.Settings, dists: List[str]) -> None:
 
     for filename in uploads:
         package = package_file.PackageFile.from_filename(
-            filename, upload_settings.comment
+            filename, upload_settings.comment,
         )
         skip_message = "  Skipping {} because it appears to already exist".format(
-            package.basefilename
+            package.basefilename,
         )
 
         # Note: The skip_existing check *needs* to be first, because otherwise

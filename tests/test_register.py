@@ -19,7 +19,7 @@ def register_settings(make_settings):
         repository: https://test.pypi.org/legacy
         username:foo
         password:bar
-    """
+    """,
     )
 
 
@@ -33,7 +33,7 @@ def test_successful_register(register_settings):
     )
 
     stub_repository = pretend.stub(
-        register=lambda package: stub_response, close=lambda: None
+        register=lambda package: stub_response, close=lambda: None,
     )
 
     register_settings.create_repository = lambda: stub_repository
@@ -53,7 +53,7 @@ def test_exception_for_redirect(register_settings):
     )
 
     stub_repository = pretend.stub(
-        register=lambda package: stub_response, close=lambda: None
+        register=lambda package: stub_response, close=lambda: None,
     )
 
     register_settings.create_repository = lambda: stub_repository

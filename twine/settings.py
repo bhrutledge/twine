@@ -273,18 +273,18 @@ class Settings:
         return cls(**settings)
 
     def _handle_package_signing(
-        self, sign: bool, sign_with: str, identity: Optional[str]
+        self, sign: bool, sign_with: str, identity: Optional[str],
     ) -> None:
         if not sign and identity:
             raise exceptions.InvalidSigningConfiguration(
-                "sign must be given along with identity"
+                "sign must be given along with identity",
             )
         self.sign = sign
         self.sign_with = sign_with
         self.identity = identity
 
     def _handle_repository_options(
-        self, repository_name: str, repository_url: Optional[str]
+        self, repository_name: str, repository_url: Optional[str],
     ) -> None:
         self.repository_config = utils.get_repository_from_config(
             self.config_file, repository_name, repository_url,
@@ -294,10 +294,10 @@ class Settings:
         )
 
     def _handle_certificates(
-        self, cacert: Optional[str], client_cert: Optional[str]
+        self, cacert: Optional[str], client_cert: Optional[str],
     ) -> None:
         self.cacert = utils.get_cacert(cacert, self.repository_config)
-        self.client_cert = utils.get_clientcert(client_cert, self.repository_config,)
+        self.client_cert = utils.get_clientcert(client_cert, self.repository_config)
 
     def check_repository_url(self) -> None:
         """Verify we are not using legacy PyPI.
@@ -308,10 +308,10 @@ class Settings:
         repository_url = cast(str, self.repository_config["repository"])
 
         if repository_url.startswith(
-            (repository.LEGACY_PYPI, repository.LEGACY_TEST_PYPI)
+            (repository.LEGACY_PYPI, repository.LEGACY_TEST_PYPI),
         ):
             raise exceptions.UploadToDeprecatedPyPIDetected.from_args(
-                repository_url, utils.DEFAULT_REPOSITORY, utils.TEST_REPOSITORY
+                repository_url, utils.DEFAULT_REPOSITORY, utils.TEST_REPOSITORY,
             )
 
     def create_repository(self) -> repository.Repository:

@@ -85,7 +85,7 @@ class DevPiEnv(jaraco.envs.ToxEnv):
         run(devpi_client + ["use", self.url + "root/pypi/"])
         run(
             devpi_client
-            + ["user", "--create", self.username, f"password={self.password}"]
+            + ["user", "--create", self.username, f"password={self.password}"],
         )
         run(devpi_client + ["login", self.username, "--password", self.password])
         run(devpi_client + ["index", "-c", "dev"])
@@ -132,7 +132,7 @@ def entered_password(monkeypatch):
 def sampleproject_dist(tmp_path_factory):
     checkout = tmp_path_factory.mktemp("sampleproject", numbered=False)
     subprocess.run(
-        ["git", "clone", "https://github.com/pypa/sampleproject", str(checkout)]
+        ["git", "clone", "https://github.com/pypa/sampleproject", str(checkout)],
     )
     with (checkout / "setup.py").open("r+") as setup:
         orig = setup.read()

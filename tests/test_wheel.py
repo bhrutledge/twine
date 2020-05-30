@@ -27,7 +27,7 @@ from . import helpers
     params=[
         "fixtures/twine-1.5.0-py2.py3-none-any.whl",
         "alt-fixtures/twine-1.5.0-py2.py3-none-any.whl",
-    ]
+    ],
 )
 def example_wheel(request):
     file_name = os.path.join(helpers.TESTS_DIR, request.param)
@@ -72,7 +72,7 @@ def test_read_non_existent_wheel_file_name():
     """Test reading a wheel file which doesn't exist"""
     file_name = "/foo/bar/baz.whl"
     with pytest.raises(
-        exceptions.InvalidDistribution, match=f"No such file: {file_name}"
+        exceptions.InvalidDistribution, match=f"No such file: {file_name}",
     ):
         wheel.Wheel(file_name)
 
@@ -94,6 +94,6 @@ def test_read_wheel_empty_metadata(tmpdir):
         zip_file.writestr("METADATA", "")
 
     with pytest.raises(
-        exceptions.InvalidDistribution, match=f"No METADATA in archive: {whl_file}"
+        exceptions.InvalidDistribution, match=f"No METADATA in archive: {whl_file}",
     ):
         wheel.Wheel(whl_file)

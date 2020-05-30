@@ -30,7 +30,7 @@ NEW_RELEASE_URL = "https://pypi.org/project/twine/1.6.5/"
 def stub_response():
     """Mock successful upload of a package."""
     return pretend.stub(
-        is_redirect=False, status_code=201, raise_for_status=lambda: None
+        is_redirect=False, status_code=201, raise_for_status=lambda: None,
     )
 
 
@@ -76,7 +76,7 @@ def test_success_with_pre_signed_distribution(upload_settings, stub_repository):
     """Adds GPG signature provided by user to uploaded package."""
     # Upload a pre-signed distribution
     result = upload.upload(
-        upload_settings, [helpers.WHEEL_FIXTURE, helpers.WHEEL_FIXTURE + ".asc"]
+        upload_settings, [helpers.WHEEL_FIXTURE, helpers.WHEEL_FIXTURE + ".asc"],
     )
     assert result is None
 
@@ -144,7 +144,7 @@ def test_get_config_old_format(make_settings, pypirc):
             [server-login]
             username:foo
             password:bar
-        """
+        """,
         )
     except KeyError as err:
         assert all(
@@ -166,7 +166,7 @@ def test_deprecated_repo(make_settings):
             repository: https://pypi.python.org/pypi/
             username:foo
             password:bar
-        """
+        """,
         )
 
         upload.upload(upload_settings, [helpers.WHEEL_FIXTURE])
@@ -191,7 +191,7 @@ def test_exception_for_redirect(make_settings):
         repository: https://test.pypi.org/legacy
         username:foo
         password:bar
-    """
+    """,
     )
 
     stub_response = pretend.stub(
@@ -201,7 +201,7 @@ def test_exception_for_redirect(make_settings):
     )
 
     stub_repository = pretend.stub(
-        upload=lambda package: stub_response, close=lambda: None
+        upload=lambda package: stub_response, close=lambda: None,
     )
 
     upload_settings.create_repository = lambda: stub_repository
@@ -213,7 +213,7 @@ def test_exception_for_redirect(make_settings):
 
 
 def test_prints_skip_message_for_uploaded_package(
-    upload_settings, stub_repository, capsys
+    upload_settings, stub_repository, capsys,
 ):
     upload_settings.skip_existing = True
 
@@ -229,7 +229,7 @@ def test_prints_skip_message_for_uploaded_package(
 
 
 def test_prints_skip_message_for_response(
-    upload_settings, stub_response, stub_repository, capsys
+    upload_settings, stub_response, stub_repository, capsys,
 ):
     upload_settings.skip_existing = True
 
@@ -315,7 +315,7 @@ def test_skip_existing_skips_files_on_repository(response_kwargs):
     "response_kwargs",
     [
         pytest.param(
-            dict(status_code=400, reason="Invalid credentials"), id="wrong_reason"
+            dict(status_code=400, reason="Invalid credentials"), id="wrong_reason",
         ),
         pytest.param(dict(status_code=404), id="wrong_code"),
     ],

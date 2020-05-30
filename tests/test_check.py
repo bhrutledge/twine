@@ -32,7 +32,7 @@ class TestWarningStream:
         self.stream.write("<string>:2: (WARNING/2) Title underline too short.")
 
         assert self.stream.output.write.calls == [
-            pretend.call("line 2: Warning: Title underline too short.\n")
+            pretend.call("line 2: Warning: Title underline too short.\n"),
         ]
 
     def test_write_nomatch(self):
@@ -59,7 +59,7 @@ def test_check_passing_distribution(monkeypatch):
         metadata_dictionary=lambda: {
             "description": "blah",
             "description_content_type": "text/markdown",
-        }
+        },
     )
     output_stream = io.StringIO()
     warning_stream = ""
@@ -85,7 +85,7 @@ def test_check_passing_distribution_with_none_renderer(content_type, monkeypatch
         metadata_dictionary=lambda: {
             "description": "blah",
             "description_content_type": content_type,
-        }
+        },
     )
 
     monkeypatch.setattr(commands, "_find_dists", lambda a: ["dist/dist.tar.gz"])
@@ -105,7 +105,7 @@ def test_check_no_description(monkeypatch, capsys):
         metadata_dictionary=lambda: {
             "description": None,
             "description_content_type": None,
-        }
+        },
     )
 
     monkeypatch.setattr(commands, "_find_dists", lambda a: ["dist/dist.tar.gz"])
@@ -132,7 +132,7 @@ def test_check_failing_distribution(monkeypatch):
         metadata_dictionary=lambda: {
             "description": "blah",
             "description_content_type": "text/markdown",
-        }
+        },
     )
     output_stream = io.StringIO()
     warning_stream = "WARNING"

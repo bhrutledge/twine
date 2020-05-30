@@ -41,7 +41,7 @@ def _find_dists(dists: List[str]) -> List[str]:
         # If nothing matches, files is []
         if not files:
             raise exceptions.InvalidDistribution(
-                "Cannot find file (or expand pattern): '%s'" % filename
+                "Cannot find file (or expand pattern): '%s'" % filename,
             )
         # Otherwise, files will be filenames that exist
         uploads.extend(files)

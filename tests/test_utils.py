@@ -38,8 +38,8 @@ def test_get_config(tmpdir):
             [pypi]
             username = testuser
             password = testpassword
-        """
-            )
+        """,
+            ),
         )
 
     assert utils.get_config(pypirc) == {
@@ -65,8 +65,8 @@ def test_get_config_no_distutils(tmpdir):
             [pypi]
             username = testuser
             password = testpassword
-        """
-            )
+        """,
+            ),
         )
 
     assert utils.get_config(pypirc) == {
@@ -96,8 +96,8 @@ def test_get_config_no_section(tmpdir):
             [pypi]
             username = testuser
             password = testpassword
-        """
-            )
+        """,
+            ),
         )
 
     assert utils.get_config(pypirc) == {
@@ -118,8 +118,8 @@ def test_get_config_override_pypi_url(tmpdir):
                 """
             [pypi]
             repository = http://pypiproxy
-        """
-            )
+        """,
+            ),
         )
 
     assert utils.get_config(pypirc)["pypi"]["repository"] == "http://pypiproxy"
@@ -156,8 +156,8 @@ def test_empty_userpass(tmpdir):
             [pypi]
             username=
             password=
-        """
-            )
+        """,
+            ),
         )
 
     config = utils.get_config(pypirc)
@@ -279,7 +279,7 @@ def test_default_to_environment_action(env_name, default, environ, expected):
 
 
 @pytest.mark.parametrize(
-    "repo_url", ["https://pypi.python.org", "https://testpypi.python.org"]
+    "repo_url", ["https://pypi.python.org", "https://testpypi.python.org"],
 )
 def test_check_status_code_for_deprecated_pypi_url(repo_url):
     response = pretend.stub(status_code=410, url=repo_url)

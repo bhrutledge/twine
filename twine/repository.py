@@ -146,7 +146,7 @@ class Repository:
                 # action
                 ":action": "file_upload",
                 "protocol_version": "1",
-            }
+            },
         )
 
         data_to_send = self._convert_data_to_list_of_tuples(data)
@@ -155,7 +155,7 @@ class Repository:
 
         with open(package.filename, "rb") as fp:
             data_to_send.append(
-                ("content", (package.basefilename, fp, "application/octet-stream"),)
+                ("content", (package.basefilename, fp, "application/octet-stream")),
             )
             encoder = requests_toolbelt.MultipartEncoder(data_to_send)
             with ProgressBar(
@@ -168,7 +168,7 @@ class Repository:
                 disable=self.disable_progress_bar,
             ) as bar:
                 monitor = requests_toolbelt.MultipartEncoderMonitor(
-                    encoder, lambda monitor: bar.update_to(monitor.bytes_read)
+                    encoder, lambda monitor: bar.update_to(monitor.bytes_read),
                 )
 
                 resp = self.session.post(
@@ -181,7 +181,7 @@ class Repository:
         return resp
 
     def upload(
-        self, package: package_file.PackageFile, max_redirects: int = 5
+        self, package: package_file.PackageFile, max_redirects: int = 5,
     ) -> requests.Response:
         number_of_redirects = 0
         while number_of_redirects < max_redirects:
@@ -199,7 +199,7 @@ class Repository:
                         reason=resp.reason,
                         retry=number_of_redirects,
                         max_redirects=max_redirects,
-                    )
+                    ),
                 )
             else:
                 return resp
@@ -207,7 +207,7 @@ class Repository:
         return resp
 
     def package_is_uploaded(
-        self, package: package_file.PackageFile, bypass_cache: bool = False
+        self, package: package_file.PackageFile, bypass_cache: bool = False,
     ) -> bool:
         # NOTE(sigmavirus24): Not all indices are PyPI and pypi.io doesn't
         # have a similar interface for finding the package versions.
