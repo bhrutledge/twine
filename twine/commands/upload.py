@@ -85,8 +85,8 @@ def upload(upload_settings: settings.Settings, dists: List[str]) -> None:
         for package in packages_to_upload:
             file_size = utils.get_file_size(package.filename)
             print(f"  {package.filename} ({file_size})")
-            if upload_settings.sign or package.signed_filename in signatures:
-                print(f"  {package.signed_filename}")
+            if package.gpg_signature:
+                print(f"  Signed with {package.signed_filename}")
         print("\n")
 
     repository = upload_settings.create_repository()
