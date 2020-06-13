@@ -54,26 +54,34 @@ def upload_settings(make_settings, stub_repository):
     return upload_settings
 
 
-def test_make_package_pre_signed_dist(upload_settings):
-    """Create a PackageFile instance from a filename, signatures and settings."""
+def test_make_package_pre_signed_dist(upload_settings, capsys):
+    """Create a PackageFile and print path, size, and user-provided signature."""
     filename = helpers.WHEEL_FIXTURE
-    signature = helpers.WHEEL_FIXTURE + ".asc"
-    signatures = {os.path.basename(signature): signature}
+    expected_size = "15.4 KB"
+    signed_filename = helpers.WHEEL_FIXTURE + ".asc"
+    signatures = {os.path.basename(signed_filename): signed_filename}
 
     upload_settings.sign = True
+    upload_settings.verbose = True
 
     package = upload._make_package(filename, signatures, upload_settings)
 
     assert package.filename == filename
     assert package.gpg_signature is not None
 
+    captured = capsys.readouterr()
+    assert captured.out.count(f"{filename} ({expected_size})") == 1
+    assert captured.out.count(f"Signed with {signed_filename}") == 1
 
-def test_make_package_unsigned_dist(upload_settings, monkeypatch):
-    """Create a PackageFile instance from a filename, no signatures and settings."""
+
+def test_make_package_unsigned_dist(upload_settings, monkeypatch, capsys):
+    """Create a PackageFile and print path, size, and Twine-generated signature."""
     filename = helpers.NEW_WHEEL_FIXTURE
+    expected_size = "21.9 KB"
     signatures = {}
 
     upload_settings.sign = True
+    upload_settings.verbose = True
 
     def stub_sign(package, *_):
         package.gpg_signature = (package.signed_basefilename, b"signature")
@@ -84,6 +92,10 @@ def test_make_package_unsigned_dist(upload_settings, monkeypatch):
 
     assert package.filename == filename
     assert package.gpg_signature is not None
+
+    captured = capsys.readouterr()
+    assert captured.out.count(f"{filename} ({expected_size})") == 1
+    assert captured.out.count(f"Signed with {package.signed_filename}") == 1
 
 
 def test_successs_prints_release_urls(upload_settings, stub_repository, capsys):
@@ -124,28 +136,6 @@ def test_print_packages_if_verbose(upload_settings, capsys):
 
     for filename, size in dists_to_upload.items():
         assert captured.out.count(f"{filename} ({size})") == 1
-
-
-# TODO: Add test of printing signatures w/o a pre-signed distribution
-# TODO: Add test of signatures that don't match dist?
-def test_print_signatures_if_verbose_with_signatures(
-    upload_settings, capsys, monkeypatch
-):
-    """Print path, file size, and signature of each dist attempting to be uploaded."""
-    dist = helpers.WHEEL_FIXTURE
-    expected_size = "15.4 KB"
-    dist_signature = helpers.WHEEL_FIXTURE + ".asc"
-
-    upload_settings.verbose = True
-    upload_settings.sign = True
-
-    result = upload.upload(upload_settings, [dist, dist_signature])
-    assert result is None
-
-    captured = capsys.readouterr()
-
-    assert captured.out.count(f"{dist} ({expected_size})") == 1
-    assert captured.out.count(f"Signed with {dist_signature}") == 1
 
 
 def test_success_with_pre_signed_distribution(upload_settings, stub_repository):

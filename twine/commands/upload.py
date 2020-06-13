@@ -58,36 +58,33 @@ def _make_package(
     package = package_file.PackageFile.from_filename(filename, upload_settings.comment)
 
     signed_name = package.signed_basefilename
-
     if signed_name in signatures:
         package.add_gpg_signature(signatures[signed_name], signed_name)
     elif upload_settings.sign:
         package.sign(upload_settings.sign_with, upload_settings.identity)
+
+    if upload_settings.verbose:
+        file_size = utils.get_file_size(package.filename)
+        print(f"  {package.filename} ({file_size})")
+        if package.gpg_signature:
+            print(f"  Signed with {package.signed_filename}")
 
     return package
 
 
 def upload(upload_settings: settings.Settings, dists: List[str]) -> None:
     dists = commands._find_dists(dists)
-
     # Determine if the user has passed in pre-signed distributions
     signatures = {os.path.basename(d): d for d in dists if d.endswith(".asc")}
     uploads = [i for i in dists if not i.endswith(".asc")]
+
     upload_settings.check_repository_url()
     repository_url = cast(str, upload_settings.repository_config["repository"])
+    print(f"Uploading distributions to {repository_url}")
 
     packages_to_upload = [
         _make_package(filename, signatures, upload_settings) for filename in uploads
     ]
-
-    print(f"Uploading distributions to {repository_url}")
-    if upload_settings.verbose:
-        for package in packages_to_upload:
-            file_size = utils.get_file_size(package.filename)
-            print(f"  {package.filename} ({file_size})")
-            if package.gpg_signature:
-                print(f"  Signed with {package.signed_filename}")
-        print("\n")
 
     repository = upload_settings.create_repository()
     uploaded_packages = []
