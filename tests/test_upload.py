@@ -54,49 +54,36 @@ def upload_settings(make_settings, stub_repository):
     return upload_settings
 
 
-@pytest.mark.parametrize(
-    ("filename, signatures"),
-    [
-        (
-            helpers.NEW_SDIST_FIXTURE,
-            {
-                os.path.basename(
-                    helpers.NEW_SDIST_FIXTURE + ".asc"
-                ): helpers.NEW_SDIST_FIXTURE
-                + ".asc"
-            },
-        )
-    ],
-)
-def test_make_package_pre_signed_dist(
-    filename, signatures, upload_settings, monkeypatch
-):
+def test_make_package_pre_signed_dist(upload_settings):
     """Create a PackageFile instance from a filename, signatures and settings."""
-    upload_settings.sign = True
+    filename = helpers.WHEEL_FIXTURE
+    signature = helpers.WHEEL_FIXTURE + ".asc"
+    signatures = {os.path.basename(signature): signature}
 
-    monkeypatch.setattr(
-        package_file.PackageFile, "add_gpg_signature", lambda *_: None,
-    )
+    upload_settings.sign = True
 
     package = upload._make_package(filename, signatures, upload_settings)
 
     assert package.filename == filename
-    assert package.signed_filename == (filename + ".asc")
+    assert package.gpg_signature is not None
 
 
-@pytest.mark.parametrize(("filename, signatures"), [(helpers.NEW_WHEEL_FIXTURE, {})])
-def test_make_package_unsigned_dist(filename, signatures, upload_settings, monkeypatch):
+def test_make_package_unsigned_dist(upload_settings, monkeypatch):
     """Create a PackageFile instance from a filename, no signatures and settings."""
+    filename = helpers.NEW_WHEEL_FIXTURE
+    signatures = {}
+
     upload_settings.sign = True
 
-    monkeypatch.setattr(
-        package_file.PackageFile, "sign", lambda *_: None,
-    )
+    def stub_sign(package, *_):
+        package.gpg_signature = (package.signed_basefilename, b"signature")
+
+    monkeypatch.setattr(package_file.PackageFile, "sign", stub_sign)
 
     package = upload._make_package(filename, signatures, upload_settings)
 
     assert package.filename == filename
-    assert package.signed_filename == (filename + ".asc")
+    assert package.gpg_signature is not None
 
 
 def test_successs_prints_release_urls(upload_settings, stub_repository, capsys):
@@ -130,7 +117,7 @@ def test_print_packages_if_verbose(upload_settings, capsys):
 
     upload_settings.verbose = True
 
-    result = upload.upload(upload_settings, dists_to_upload)
+    result = upload.upload(upload_settings, dists_to_upload.keys())
     assert result is None
 
     captured = capsys.readouterr()
