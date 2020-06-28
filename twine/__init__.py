@@ -24,6 +24,7 @@ __all__ = (
 
 __copyright__ = "Copyright 2019 Donald Stufft and individual contributors"
 
+import logging
 import sys
 
 if sys.version_info[:2] >= (3, 8):
@@ -42,3 +43,21 @@ __version__ = metadata["version"]
 __author__ = metadata["author"]
 __email__ = metadata["author-email"]
 __license__ = metadata["license"]
+
+
+logger = logging.getLogger(__name__)
+
+_VERBOSITY_TO_LOG_LEVEL = {
+    0: logging.WARNING,
+    1: logging.INFO,
+    2: logging.DEBUG,
+}
+
+
+def setup_logging(verbosity: int = 0) -> None:
+    """Configure logging based on the --verbose option."""
+    verbosity = min(2, verbosity)
+
+    handler = logging.StreamHandler(sys.stdout)
+    logger.addHandler(handler)
+    logger.setLevel(_VERBOSITY_TO_LOG_LEVEL[verbosity])

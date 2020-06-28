@@ -17,6 +17,7 @@ from typing import Any
 from typing import Optional
 from typing import cast
 
+import twine
 from twine import auth
 from twine import exceptions
 from twine import repository
@@ -121,8 +122,7 @@ class Settings:
         self.config_file = config_file
         self.comment = comment
         self.verbose = verbose
-        # Setting up logging before the config is loaded
-        utils.setup_logging(verbose)
+        twine.setup_logging(verbose)
         self.disable_progress_bar = disable_progress_bar
         self.skip_existing = skip_existing
         self._handle_repository_options(
